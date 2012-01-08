@@ -1,0 +1,60 @@
+<html>
+<head>
+<!--Big thanks to : http://lifehacker.com/5857721/how-to-build-a-chrome-extension?utm_source=Lifehacker+Newsletter&utm_campaign=c02bdaca9d-UA-142218-1&utm_medium=email-->
+	<script src='scripts/jquery-1.6.1.min.js'></script>
+	<script src="scripts/parse.js"></script>
+	<script>
+		
+		function fetch_feed() {
+			chrome.extension.sendRequest({'action' : 'fetch_feed', 'url' : 'http://www.tsn.ca/datafiles/rss/stories.xml'}, 
+				function(response) {
+					display_stories(response);
+				}
+			);
+		}
+		
+		function display_stories(feed_data) {
+			var xml_doc = $.parseXML(feed_data);
+			$xml = $(xml_doc);
+			var items = $xml.find("item");
+			$('#popup').html('<img src="images/tsn2.jpg" id="logo" onclick="open_item(\'http://www.tsn.ca\'); window.close();" /><p><br clear="all" />');
+			
+			items.each(function(index, element) {
+				
+				var post = parse_post(element);
+				var item = '';
+				var class2 = '';
+				if (index >= localStorage['unread_count']) {
+					// // console.log('visited');
+					item += '<div class="post read">';
+				}
+				else {
+					item += '<div class="post">'
+				}
+				item += '<a href="' + post.link + '">\
+								<div id="' + post.guid + '" class="item" onclick="open_item(\'' + post.link + '\');">\
+									<img src="' + post.img + '" width="107" height="60" />\
+									<h4>' + post.title + '</h4>\
+									<span class="description"></span>\
+								</div>\
+							</a>';
+				item += '</div>';
+				$('#popup').append(item);
+			});
+		}
+		
+	</script>
+	<link rel="stylesheet" href="styles/post.css" type="text/css" />
+</head>
+<body>
+	
+	<div id="popup">
+		
+	</div>
+	<script>
+		$(document).ready(function() {
+			fetch_feed();
+		});
+	</script>
+</body>
+</html>

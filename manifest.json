@@ -1,0 +1,19 @@
+{
+  "name": "TSN Fetcher",
+  "version": "0.1",
+
+  "description": "Keep up with the latest TSN News",
+  "icons": { "16" : "images/tsnicon.jpg",
+ 			"48" : "images/48.jpg",
+			"128" : "images/128.jpg"},
+  "homepage_url": "https://github.com/davidmkershaw",
+	"background_page": "background.html",
+	"permissions": [
+	  "http://www.tsn.ca/datafiles/rss/Stories.xml"
+	],
+	"browser_action": {
+    "default_icon": "images/tsnicon.jpg", 
+    "default_title": "NHL Notifier",      
+    "default_popup": "popup.html"       
+  }
+}
